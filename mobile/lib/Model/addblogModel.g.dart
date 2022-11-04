@@ -7,14 +7,14 @@ part of 'addblogModel.dart';
 // **************************************************************************
 
 AddblogModel _$AddblogModelFromJson(Map<String, dynamic> json) => AddblogModel(
-      coverImage: json['coverImage'] as String,
-      count: json['count'] as int,
-      share: json['share'] as int,
-      comment: json['comment'] as int,
-      id: json['id'] as String,
-      username: json['username'] as String,
-      title: json['title'] as String,
-      body: json['body'] as String,
+      json['coverImage'] as String,
+      json['count'] as int,
+      json['share'] as int,
+      json['comment'] as int,
+      json['id'] as String,
+      json['username'] as String,
+      json['title'] as String,
+      json['body'] as String,
     );
 
 Map<String, dynamic> _$AddblogModelToJson(AddblogModel instance) =>

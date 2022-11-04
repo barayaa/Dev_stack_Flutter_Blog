@@ -12,18 +12,18 @@ class AddblogModel {
   String username;
   String title;
   String body;
-  AddblogModel({
-    required this.coverImage,
-    required this.count,
-    required this.share,
-    required this.comment,
-    required this.id,
-    required this.username,
-    required this.title,
-    required this.body,
-  });
+  AddblogModel(
+    this.coverImage,
+    this.count,
+    this.share,
+    this.comment,
+    this.id,
+    this.username,
+    this.title,
+    this.body,
+  );
 
   factory AddblogModel.fromJson(Map<String, dynamic> json) =>
       _$AddblogModelFromJson(json);
-  Map<String, dynamic> toJson() => _$AddblogModelToJson(this);
+  Map<String, dynamic> toJson(String body) => _$AddblogModelToJson(this);
 }

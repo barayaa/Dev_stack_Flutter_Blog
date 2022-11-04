@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/CustomWidget/overlayCard.dart';
+import 'package:mobile/Model/addblogModel.dart';
+import 'package:mobile/NetworkHandler.dart';
+import 'package:mobile/pages/homePage.dart';
 
 class AddBlog extends StatefulWidget {
   const AddBlog({super.key});
@@ -13,8 +17,19 @@ class AddBlog extends StatefulWidget {
 
 class _AddBlogState extends State<AddBlog> {
   final _globalKey = GlobalKey<FormState>();
+  NetworkHandler networkHandler = NetworkHandler();
   TextEditingController _title = TextEditingController();
   TextEditingController _body = TextEditingController();
+
+  late Future<AddblogModel> addblogModel;
+
+  // addblog(String _title, String _body) async {
+  //   if (_imageFile != null && _globalKey.currentState!.validate()) {
+  //     var response = await networkHandler
+  //         .post("/blogpost/Add", {"title": _title, "body": _body});
+  //     return response.body;
+  //   }
+  // }
 
   final ImagePicker _picker = ImagePicker();
   // ignore: unused_field
@@ -152,7 +167,31 @@ class _AddBlogState extends State<AddBlog> {
 
   Widget addButton() {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        // addblog(_title.text, _body.text);
+        if (_imageFile != null && _globalKey.currentState!.validate()) {
+          var response = await networkHandler.post(
+              "/blogpost/Add", {"title": _title.text, "body": _body.text});
+          print(response.body);
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            String id = json.decode(response.body)["data"];
+            var imageResponse = await networkHandler.patchImage(
+                "/blogpost/add/coverImage/${id}", _imageFile!.path);
+            print(imageResponse.statusCode);
+            if (imageResponse.statusCode == 200 &&
+                imageResponse.statusCode != 201) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+                (route) => false,
+              );
+            }
+          }
+        }
+      },
       child: Center(
         child: Container(
           height: 60,

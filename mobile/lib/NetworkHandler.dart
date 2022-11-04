@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 class NetworkHandler {
-  String baseUrl = "http://192.168.101.153:5000";
+  String baseUrl = "http://192.168.248.153:5000";
   var log = Logger();
   FlutterSecureStorage storage = FlutterSecureStorage();
 
@@ -17,8 +17,12 @@ class NetworkHandler {
   Future get(String url) async {
     String? token = await storage.read(key: "token");
     url = formater(url);
-    var response = await http
-        .get(Uri.parse(url), headers: {"Authorization": "Bearer $token"});
+    var response = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
     if (response.statusCode == 200 || response.statusCode == 201) {
       log.i(response.body);
       return json.decode(response.body);
